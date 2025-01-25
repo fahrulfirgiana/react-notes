@@ -1,46 +1,66 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import NoteList from '../components/NoteList';
 import SearchBar from '../components/SearchBar';
-import { getArchivedNotes } from '../utils/local-data';
+import { getArchivedNotes } from '../utils/api';
 
-class ArsipPage extends React.Component {
-  constructor(props) {
-    super(props);
+function ArsipPage() {
+  const [noteArchived, setNoteArchived] = useState([]);  
+  const [loading, setLoading] = useState(true);  
+  const [error, setError] = useState(null);  
+  const [keyword, setKeyword] = useState('');
 
-    this.state = {
-      notes: getArchivedNotes(),
-      keyword: '',
+  useEffect(() => {
+    const fetchNote = async () => {
+      try {
+        const { error, data } = await getArchivedNotes();  
+        if (error) {
+          setError('Note not found');
+        } else {
+          setNoteArchived(data);
+        }
+      } catch (err) {
+        setError('Failed to load note');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
-  }
+    fetchNote();
+  }, []);
 
-  onKeywordChangeHandler(keyword) {
-    this.setState(() => {
-      return {
-        keyword,
-      };
+    const filteredNotes = noteArchived.filter((note) => {
+      return note.title.toLowerCase().includes(keyword.toLowerCase());
     });
-  }
 
-  render() {
-    const filteredNotes = this.state.notes.filter((note) => {
-      return note.title.toLowerCase().includes(this.state.keyword.toLowerCase());
-    });
+    const onKeywordChangeHandler = (newKeyword) => {
+      setKeyword(newKeyword); 
+    };
+
+    if (loading) {
+      return <p>Loading...</p>;
+    }
+  
+    if (error) {
+      return <p>{error}</p>;
+    }
+  
+    if (!noteArchived) {
+      return <p>Note is not found!</p>;
+    }
 
     return (
       <section className='homepage'>
         <div className='homepage-header'>
           <h2>Catatan Arsip</h2>
           <SearchBar
-            keyword={this.state.keyword}
-            keywordChange={this.onKeywordChangeHandler}
+            keyword={keyword}
+            keywordChange={onKeywordChangeHandler}
           />
         </div>
         <NoteList notes={filteredNotes} />
       </section>
     );
   }
-}
 
 export default ArsipPage;
