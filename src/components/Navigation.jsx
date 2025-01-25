@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { MdHome, MdArchive } from 'react-icons/md';
+import { FiLogOut } from 'react-icons/fi';
+import PropTypes from 'prop-types';
 
-function Navigation() {
+function Navigation({logout, name }) {
   const location = useLocation();
 
   return (
@@ -29,9 +31,14 @@ function Navigation() {
             Arsip
           </Link>
         </li>
+        <li><button onClick={logout}>{name}<FiLogOut /></button></li>
       </ul>
     </nav>
   );
 }
+
+Navigation.propTypes = {
+  logout: PropTypes.func.isRequired,
+};
 
 export default Navigation;
