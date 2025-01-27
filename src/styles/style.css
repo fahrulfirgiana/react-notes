@@ -748,7 +748,6 @@ h2.title-text{
 .fab-archive {
   background-color: #c7c7c7;
 }
-
 .fab-archive:hover {
   background-color: #ececec;
 }
@@ -918,7 +917,6 @@ h2.title-text{
     font-size: 14px;
     padding: 8px 12px;
   }
-
   .sidebar-menu a svg {
     font-size: 18px;
   }
@@ -927,7 +925,6 @@ h2.title-text{
     bottom: 24px;
     right: 24px;
   }
-
   .fab {
     width: 48px;
     height: 48px;
