@@ -2,10 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiPlus } from "react-icons/fi";
 import NoteList from '../components/NoteList';
-import SearchBar from '../components/SearchBar';
-import { getActiveNotes } from '../utils/api'; // Pastikan import dari file API
+import Navbar from '../components/Navbar';
+import { getActiveNotes } from '../utils/api';
+import content from '../utils/content';
+import { LocaleContext } from '../context/LocaleContext';
+import Loading from "../components/Loading";
+import PropTypes from 'prop-types';
 
-function HomePage() {
+
+function HomePage({name, logout}) {
+  const { locale } = React.useContext(LocaleContext);
   const [notes, setNotes] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [isLoading, setIsLoading] = useState(true);
@@ -36,18 +42,19 @@ function HomePage() {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   return (
     <section className='homepage'>
-      <div className='homepage-header'>
-        <h2>Catatan Aktif</h2>
-        <SearchBar
-          keyword={keyword}
-          keywordChange={onKeywordChangeHandler}
-        />
-      </div>
+      <Navbar
+        title={content.home[locale].header}
+        keyword={keyword}
+        keywordChange={onKeywordChangeHandler}
+        name={name}
+        logout={logout}
+      />
+      
       <NoteList notes={filteredNotes} />
 
       <Link to='/add-note'>
@@ -67,5 +74,10 @@ function HomePage() {
     </section>
   );
 }
+
+HomePage.propTypes = {
+  name: PropTypes.string.isRequired,
+  logout: PropTypes.func.isRequired,
+};
 
 export default HomePage;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 import RegisterInput from '../components/RegisterInput';
 import { register } from '../utils/api';
  
@@ -15,10 +15,18 @@ function RegisterPage() {
   }
  
   return (
-    <section className='register-page'>
-      <h2>Gak perlu serius-serius ya isinya ...</h2>
+    <section>
+      <div>
+        <Navbar
+          title="NoteApp"
+          showSearch={false}
+          showLogout={false}
+          showName={false}
+        />
+      </div>
+      <div className='register-page'>
       <RegisterInput register={onRegisterHandler} />
-      <p>Kembali ke <Link to="/">Masuk</Link></p>
+      </div>
     </section>
   )
 }

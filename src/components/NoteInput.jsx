@@ -1,61 +1,49 @@
-import React from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { FaPaperPlane } from 'react-icons/fa'; // Ganti dengan React Icons
+import { FaPaperPlane } from 'react-icons/fa'; 
+import { LocaleContext } from "../context/LocaleContext";
+import content from '../utils/content';  
 
-class NoteInput extends React.Component {
-  constructor(props) {
-    super(props);
+function NoteInput({ addNote }) {
+  const { locale } = useContext(LocaleContext);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
 
-    this.state = {
-      title: '',
-      body: '',
-    };
+  const onTitleChangeEventHandler = (event) => {
+    setTitle(event.target.value);
+  };
 
-    this.onTitleChangeEventHandler = this.onTitleChangeEventHandler.bind(this);
-    this.onBodyChangeEventHandler = this.onBodyChangeEventHandler.bind(this);
-    this.onSubmitEventHandler = this.onSubmitEventHandler.bind(this);
-  }
+  const onBodyChangeEventHandler = (event) => {
+    setBody(event.target.value);
+  };
 
-  onTitleChangeEventHandler(event) {
-    this.setState({
-      title: event.target.value,
-    });
-  }
-
-  onBodyChangeEventHandler(event) {
-    this.setState({
-      body: event.target.value,
-    });
-  }
-
-  onSubmitEventHandler(event) {
+  const onSubmitEventHandler = (event) => {
     event.preventDefault();
-    this.props.addNote(this.state);
-  }
+    addNote({ title, body });
+  };
 
-  render() {
-    return (
-      <form className='contact-input' onSubmit={this.onSubmitEventHandler}>
-        <input
-          type='text'
-          className='title__'
-          placeholder='Catatan Rahasia'
-          value={this.state.title}
-          onChange={this.onTitleChangeEventHandler}
-        />
-        <input
-          type='text'
-          className='body__'
-          placeholder='Sebenarnya saya adalah'
-          value={this.state.body}
-          onChange={this.onBodyChangeEventHandler}
-        />
-        <button type='submit' className='submit-btn'>
-          <FaPaperPlane style={{ fontSize: '18px', marginRight: '8px' }} /> Tambah
-        </button>
-      </form>
-    );
-  }
+  return (
+    <form className='contact-input' onSubmit={onSubmitEventHandler}>
+      <input
+        type='text'
+        className='title__'
+        placeholder={content.noteInput[locale].titlePlaceholder}
+        value={title}
+        onChange={onTitleChangeEventHandler}
+      />
+      <input
+        type='text'
+        className='body__'
+        placeholder={content.noteInput[locale].bodyPlaceholder}
+        value={body}
+        onChange={onBodyChangeEventHandler}
+      />
+      <button type='submit' className='submit-btn'>
+        <FaPaperPlane style={{ fontSize: '18px', marginRight: '8px' }} />
+        {content.noteInput[locale].addButton}
+      </button>
+    </form>
+  );
 }
 
 NoteInput.propTypes = {

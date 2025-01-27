@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { MdArchive, MdUnarchive } from 'react-icons/md';
 import { FaTrashAlt } from 'react-icons/fa';
+import { MdArchive, MdUnarchive } from 'react-icons/md';
+import { useNavigate, useParams } from 'react-router-dom';
+import Loading from "../components/Loading";
 import NoteDetail from '../components/NoteDetail';
-import { getNote, deleteNote, archiveNote, unarchiveNote } from '../utils/api'; 
-import PropTypes from 'prop-types';
+import { archiveNote, deleteNote, getNote, unarchiveNote } from '../utils/api';
+
 
 function DetailPage() {
   const { id } = useParams();
@@ -56,15 +57,11 @@ function DetailPage() {
   };
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {
     return <p>{error}</p>;
-  }
-
-  if (!note) {
-    return <p>Note is not found!</p>;
   }
 
   return (

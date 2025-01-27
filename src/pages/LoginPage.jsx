@@ -1,25 +1,40 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import LoginInput from '../components/LoginInput';
-import { login } from '../utils/api';
- 
+import React from "react";
+import LoginInput from "../components/LoginInput";
+import Navbar from "../components/Navbar";
+import { login } from "../utils/api";
+
 function LoginPage({ loginSuccess }) {
   async function onLogin({ email, password }) {
-    const { error, data } = await login({ email, password });
- 
-    if (!error) {
-      loginSuccess(data);
+    try {
+      const { error, data } = await login({ email, password });
+      if (error) {
+        alert("Login gagal! Periksa email dan password Anda.");
+      } else {
+        loginSuccess(data);
+      }
+    } catch (err) {
+      console.error("Login error:", err);
+      alert("Terjadi kesalahan pada server.");
     }
   }
- 
+
   return (
-    <section className='login-page'>
-      <h2>Silakan masuk untuk melanjutkan ...</h2>
-      <LoginInput login={onLogin} />
-      <p>Belum punya akun? <Link to="/register">Daftar di sini.</Link></p>
+    <section>
+      <div>
+        <Navbar
+          title="NoteApp"
+          showSearch={false}
+          showLogout={false}
+          showName={false}
+        />
+      </div>
+      <div  className="login-page">
+        <LoginInput login={onLogin} />
+      </div>
     </section>
   );
 }
+
+
 
 export default LoginPage;

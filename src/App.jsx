@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from "react";
-import Navigation from "./components/navigation";
+import React, { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import HomePage from "./pages/HomePage";
+import Navigation from "./components/Navigation";
+import NotFoundPage from "./components/NotFoundPage";
+import { LocaleProvider } from "./context/LocaleContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import AddPage from "./pages/AddPage";
 import ArsipPage from "./pages/ArsipPage";
 import DetailPage from "./pages/DetailPage";
-import AddPage from "./pages/AddPage";
-import NotFoundPage from "./components/NotFoundPage";
-import RegisterPage from "./pages/RegisterPage";
+import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
-import { getUserLogged , putAccessToken } from "./utils/api";
+import RegisterPage from "./pages/RegisterPage";
+import { getUserLogged, putAccessToken } from "./utils/api";
+import PropTypes from "prop-types";
 
 function App() {
-  const [authedUser, setAuthedUser] = useState(null); 
-  const [initializing, setInitializing] = useState(true); 
+  const [authedUser, setAuthedUser] = useState(null);
+  const [initializing, setInitializing] = useState(true);
 
   useEffect(() => {
     async function fetchUser() {
@@ -21,26 +24,26 @@ function App() {
       if (error) {
         console.error("Gagal mengambil data user", data);
       } else {
-        setAuthedUser(data);  
+        setAuthedUser(data);
       }
     }
 
-    fetchUser(); 
-  }, []); //
+    fetchUser();
+  }, []);
 
   async function onLoginSuccess({ accessToken }) {
-    putAccessToken(accessToken);  
-    const { error, data } = await getUserLogged();  
+    putAccessToken(accessToken);
+    const { error, data } = await getUserLogged();
     if (error) {
       console.error("Gagal mengambil data user", data);
     } else {
-      setAuthedUser(data);  
+      setAuthedUser(data);
     }
   }
 
   function onLogout() {
-    setAuthedUser(null);  
-    putAccessToken('');  
+    setAuthedUser(null);
+    putAccessToken("");
   }
 
   if (initializing) {
@@ -49,34 +52,58 @@ function App() {
 
   if (authedUser === null) {
     return (
-      <div className="contact-app">
+      <div className="note-app container">
         <header className="contact-app__header">
-          <h1>Aplikasi Kontak</h1>
+          
         </header>
         <main>
-          <Routes>
-            <Route path="/*" element={<LoginPage loginSuccess={onLoginSuccess}/>} />
-            <Route path="/register" element={<RegisterPage />} />
-          </Routes>
+          <LocaleProvider>
+            <ThemeProvider>
+              <Routes>
+                <Route
+                  path="/*"
+                  element={<LoginPage loginSuccess={onLoginSuccess} />}
+                />
+                <Route path="/register" element={<RegisterPage />} />
+              </Routes>
+            </ThemeProvider>
+          </LocaleProvider>
         </main>
       </div>
     );
   }
 
   return (
-    <div className="app-container">
-      <Navigation logout={onLogout} name={authedUser.name}/>
-      <main>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/arsip" element={<ArsipPage />} />
-          <Route path="/notes/:id" element={<DetailPage />} />
-          <Route path="/add-note" element={<AddPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </main>
-    </div>
+    <LocaleProvider>
+      <ThemeProvider>
+        <div className="app-container">
+          <Navigation logout={onLogout} name={authedUser.name} />
+          <main>
+            <Routes>
+              <Route
+                path="/"
+                element={<HomePage logout={onLogout} name={authedUser.name} />}
+              />
+              <Route path="/arsip" element={<ArsipPage />} />
+              <Route path="/notes/:id" element={<DetailPage />} />
+              <Route path="/add-note" element={<AddPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </main>
+        </div>
+      </ThemeProvider>
+    </LocaleProvider>
   );
 }
+
+Navigation.propTypes = {
+  logout: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+};
+
+HomePage.propTypes = {
+  logout: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 export default App;

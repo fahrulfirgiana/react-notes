@@ -1,44 +1,37 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { MdHome, MdArchive } from 'react-icons/md';
-import { FiLogOut } from 'react-icons/fi';
-import PropTypes from 'prop-types';
+import React from "react";
+import { MdArchive, MdHome } from "react-icons/md";
+import { Link, useLocation } from "react-router-dom";
+import { LocaleContext } from "../context/LocaleContext";
 
-function Navigation({logout, name }) {
+function Navigation() {
   const location = useLocation();
+  const { locale } = React.useContext(LocaleContext);
+  
 
   return (
-    <nav className='sidebar'>
-      <div className='sidebar-header'>
-        <h1>NoteApp</h1>
+    <nav className="sidebar">
+      <div className="sidebar-header">
+        <p className="title-app">NoteApp</p>
       </div>
-      <ul className='sidebar-menu'>
+      <ul className="sidebar-menu">
         <li>
-          <Link 
-            to='/' 
-            className={location.pathname === '/' ? 'active' : ''}
-          >
-            <MdHome /> 
-            Home
+          <Link to="/" className={location.pathname === "/" ? "active" : ""}>
+            <MdHome />
+            {locale === 'id' ? 'Beranda' : 'Home'}
           </Link>
         </li>
         <li>
-          <Link 
-            to='/arsip'
-            className={location.pathname === '/arsip' ? 'active' : ''}
+          <Link
+            to="/arsip"
+            className={location.pathname === "/arsip" ? "active" : ""}
           >
-            <MdArchive /> 
-            Arsip
+            <MdArchive />
+            {locale === 'id' ? 'Arsip' : 'Archive'}
           </Link>
         </li>
-        <li><button onClick={logout}>{name}<FiLogOut /></button></li>
       </ul>
     </nav>
   );
 }
-
-Navigation.propTypes = {
-  logout: PropTypes.func.isRequired,
-};
 
 export default Navigation;
