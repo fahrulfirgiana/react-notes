@@ -2,6 +2,7 @@ import React from "react";
 import LoginInput from "../components/LoginInput";
 import Navbar from "../components/Navbar";
 import { login } from "../utils/api";
+import PropTypes from "prop-types";
 
 function LoginPage({ loginSuccess }) {
   async function onLogin({ email, password }) {
@@ -28,13 +29,15 @@ function LoginPage({ loginSuccess }) {
           showName={false}
         />
       </div>
-      <div  className="login-page">
+      <div className="login-page">
         <LoginInput login={onLogin} />
       </div>
     </section>
   );
 }
 
-
+LoginPage.propTypes = {
+  loginSuccess: PropTypes.func.isRequired,
+};
 
 export default LoginPage;

@@ -118,6 +118,8 @@ Navbar.propTypes = {
   name: PropTypes.string,
   keyword: PropTypes.string,
   showSearch: PropTypes.bool,
+  keywordChange: PropTypes.func,
+  logout: PropTypes.func,
   showLogout: PropTypes.bool,
   showName: PropTypes.bool,
 };

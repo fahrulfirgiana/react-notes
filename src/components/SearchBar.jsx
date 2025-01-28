@@ -3,7 +3,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { LocaleContext } from '../context/LocaleContext';
 import PropTypes from 'prop-types';
 
-function SearchBar({ title, keyword, keywordChange }) {
+function SearchBar({ keyword, keywordChange }) {
     const { locale } = React.useContext(LocaleContext);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -15,7 +15,6 @@ function SearchBar({ title, keyword, keywordChange }) {
     <div 
       className={`homepage-header ${isSearchOpen ? 'search-active' : ''}`}
     >
-      <h2>{title}</h2>
       {isSearchOpen ? (
         <input
           type="text"
@@ -36,7 +35,6 @@ function SearchBar({ title, keyword, keywordChange }) {
 }
 
 SearchBar.propTypes = {
-  title: PropTypes.string.isRequired,
   keyword: PropTypes.string.isRequired,
   keywordChange: PropTypes.func.isRequired,
 };

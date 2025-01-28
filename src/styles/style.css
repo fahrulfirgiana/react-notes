@@ -245,7 +245,7 @@ main {
 }
 
 .search-icon-button:hover {
-  color: var(--primary); /* Warna hover bisa tetap primary */
+  color: var(--primary); 
 }
 
 .homepage-header h2 {
@@ -451,10 +451,11 @@ h2.title-text{
   font-size: 0.875rem;
   line-height: 1.25rem;
   margin-top: 1rem;
+  color: var(--on-background);
 }
 
 .signup a {
-  color: rgba(243, 244, 246, 1);
+  color: var(--on-background);
   text-decoration: none;
 }
 

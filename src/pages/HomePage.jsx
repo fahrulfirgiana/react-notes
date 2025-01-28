@@ -8,13 +8,16 @@ import content from '../utils/content';
 import { LocaleContext } from '../context/LocaleContext';
 import Loading from "../components/Loading";
 import PropTypes from 'prop-types';
+import { useSearchParams } from 'react-router-dom';
 
 
 function HomePage({name, logout}) {
   const { locale } = React.useContext(LocaleContext);
   const [notes, setNotes] = useState([]);
-  const [keyword, setKeyword] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
+
+  const keyword = searchParams.get('keyword') || '';
 
   useEffect(() => {
     async function fetchNotes() {
@@ -34,7 +37,7 @@ function HomePage({name, logout}) {
   }, []);
 
   const onKeywordChangeHandler = (newKeyword) => {
-    setKeyword(newKeyword);
+    setSearchParams({ keyword: newKeyword });
   };
 
   const filteredNotes = notes.filter((note) => 
