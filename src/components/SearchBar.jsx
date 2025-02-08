@@ -1,32 +1,54 @@
-import React, { useState } from 'react';
+import { InputGroup } from "@/components/ui/input-group";
+import { Input } from "@chakra-ui/react";
+import PropTypes from "prop-types";
+import React, { useState, useRef, useEffect } from "react";
 import { IoSearchOutline } from "react-icons/io5";
-import { LocaleContext } from '../context/LocaleContext';
-import PropTypes from 'prop-types';
+import { LuSearch } from "react-icons/lu";
+import { LocaleContext } from "../context/LocaleContext";
 
 function SearchBar({ keyword, keywordChange }) {
-    const { locale } = React.useContext(LocaleContext);
+  const { locale } = React.useContext(LocaleContext);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const searchRef = useRef(null); // Referensi untuk elemen search
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
   };
 
+  // Fungsi untuk menangani klik di luar elemen search
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setIsSearchOpen(false); // Tutup search jika klik di luar elemen search
+      }
+    }
+
+    // Tambahkan event listener saat search terbuka
+    if (isSearchOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    // Hapus event listener saat search ditutup
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isSearchOpen]);
+
   return (
     <div 
-      className={`homepage-header ${isSearchOpen ? 'search-active' : ''}`}
+      ref={searchRef} // Tambahkan ref di container utama
+      className={`homepage-header ${isSearchOpen ? "search-active" : ""}`}
     >
       {isSearchOpen ? (
-        <input
-          type="text"
-          placeholder={locale === 'id' ? 'Cari berdasarkan judul...' : 'Search by title...'}
-          className="search-bar"
-          value={keyword}
-          onChange={(event) => keywordChange(event.target.value)}
-          onBlur={toggleSearch}
-          autoFocus
-        />
+        <InputGroup flex="1" startElement={<LuSearch />}>
+          <Input
+            value={keyword}
+            onChange={(event) => keywordChange(event.target.value)}
+            placeholder={locale === "id" ? "Cari berdasarkan judul..." : "Search by title..."}
+          />
+        </InputGroup>
       ) : (
-        <button onClick={toggleSearch} className='search-icon-button'>
+        <button onClick={toggleSearch} className="search-icon-button">
           <IoSearchOutline size={24} />
         </button>
       )}

@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
-import NoteList from '../components/NoteList';
-import Navbar from '../components/Navbar';
-import { getActiveNotes } from '../utils/api';
-import content from '../utils/content';
-import { LocaleContext } from '../context/LocaleContext';
+import NoteList from "../components/NoteList";
+import Navbar from "../components/Navbar";
+import { getActiveNotes } from "../utils/api";
+import content from "../utils/content";
+import { LocaleContext } from "../context/LocaleContext";
 import Loading from "../components/Loading";
-import PropTypes from 'prop-types';
-import { useSearchParams } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { useSearchParams } from "react-router-dom";
+import { ThemeContext } from "@/context/ThemeContext";
+import { Box, Button } from "@chakra-ui/react";
 
-
-function HomePage({name, logout}) {
+function HomePage({ name, logout }) {
   const { locale } = React.useContext(LocaleContext);
   const [notes, setNotes] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
 
-  const keyword = searchParams.get('keyword') || '';
+  const keyword = searchParams.get("keyword") || "";
 
   useEffect(() => {
     async function fetchNotes() {
@@ -28,7 +29,7 @@ function HomePage({name, logout}) {
           setIsLoading(false);
         }
       } catch (error) {
-        console.error('Failed to fetch notes:', error);
+        console.error("Failed to fetch notes:", error);
         setIsLoading(false);
       }
     }
@@ -40,41 +41,49 @@ function HomePage({name, logout}) {
     setSearchParams({ keyword: newKeyword });
   };
 
-  const filteredNotes = notes.filter((note) => 
+  const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(keyword.toLowerCase())
   );
 
-  if (isLoading) {
-    return <Loading />;
-  }
-
   return (
-    <section className='homepage'>
-      <Navbar
-        title={content.home[locale].header}
-        keyword={keyword}
-        keywordChange={onKeywordChangeHandler}
-        name={name}
-        logout={logout}
-      />
-      
-      <NoteList notes={filteredNotes} />
-
-      <Link to='/add-note'>
-        <button
-          className='fab'
-          aria-label='add'
-          style={{
-            position: 'fixed',
-            bottom: '50px',
-            right: '20px',
-            borderRadius: '12px',
-          }}
+    <Box as="section" h="100vh">
+      <Box p="41px">
+        <Navbar
+          title={content.home[locale].header}
+          keyword={keyword}
+          keywordChange={onKeywordChangeHandler}
+          name={name}
+          logout={logout}
+        />
+        {isLoading ? <Loading /> : <NoteList notes={filteredNotes} />}
+        <Box
+          position="fixed"
+          bottom="32px"
+          right="32px"
+          display="flex"
+          gap="16px"
+          zIndex="1000"
         >
-          <FiPlus size={32} color="white" />
-        </button>
-      </Link>
-    </section>
+          <Link to="/add-note">
+            <Button
+              aria-label="add"
+              borderRadius="12px"
+              bg="teal.600"
+              _hover={{ bg: "teal.700" }}
+              color="white"
+              w="56px"
+              h="56px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              boxShadow="0 4px 12px rgba(0, 0, 0, 0.25)"
+            >
+              <FiPlus size={32} color="white" />
+            </Button>
+          </Link>
+        </Box>
+      </Box>
+    </Box>
   );
 }
 

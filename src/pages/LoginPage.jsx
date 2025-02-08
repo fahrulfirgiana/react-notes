@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import LoginInput from "../components/LoginInput";
 import Navbar from "../components/Navbar";
 import { login } from "../utils/api";
 import PropTypes from "prop-types";
+import { Box } from "@chakra-ui/react";
+import { ThemeContext } from "../context/ThemeContext";
 
 function LoginPage({ loginSuccess }) {
+    const { theme } = useContext(ThemeContext);
+  
   async function onLogin({ email, password }) {
     try {
       const { error, data } = await login({ email, password });
@@ -20,19 +24,9 @@ function LoginPage({ loginSuccess }) {
   }
 
   return (
-    <section>
-      <div>
-        <Navbar
-          title="NoteApp"
-          showSearch={false}
-          showLogout={false}
-          showName={false}
-        />
-      </div>
-      <div className="login-page">
+      <Box w={{ base: "83%", md: "63%", xl: "53%" }} p="12" m="0" rounded="lg" bg={theme === "dark" ? "#0b1437" : "white"}>
         <LoginInput login={onLogin} />
-      </div>
-    </section>
+      </Box>
   );
 }
 
