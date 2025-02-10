@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Box, Button } from "@chakra-ui/react";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import { FiPlus } from "react-icons/fi";
-import NoteList from "../components/NoteList";
+import { Link, useSearchParams } from "react-router-dom";
+import Loading from "../components/Loading";
 import Navbar from "../components/Navbar";
+import NoteList from "../components/NoteList";
+import { LocaleContext } from "../context/LocaleContext";
 import { getActiveNotes } from "../utils/api";
 import content from "../utils/content";
-import { LocaleContext } from "../context/LocaleContext";
-import Loading from "../components/Loading";
-import PropTypes from "prop-types";
-import { useSearchParams } from "react-router-dom";
-import { ThemeContext } from "@/context/ThemeContext";
-import { Box, Button } from "@chakra-ui/react";
 
 function HomePage({ name, logout }) {
   const { locale } = React.useContext(LocaleContext);
@@ -47,7 +45,7 @@ function HomePage({ name, logout }) {
 
   return (
     <Box as="section" h="100vh">
-      <Box p="41px">
+      <Box p={{ base: "16px", lg: "41px" }}>
         <Navbar
           title={content.home[locale].header}
           keyword={keyword}
@@ -55,7 +53,9 @@ function HomePage({ name, logout }) {
           name={name}
           logout={logout}
         />
-        {isLoading ? <Loading /> : <NoteList notes={filteredNotes} />}
+        <Box p={{ base: "16px", lg: "24px" }}>
+          {isLoading ? <Loading /> : <NoteList notes={filteredNotes} />}
+        </Box>
         <Box
           position="fixed"
           bottom="32px"

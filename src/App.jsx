@@ -129,7 +129,7 @@ function App() {
     <Grid templateColumns="repeat(6, 1fr)">
       <GridItem
         as="aside"
-        colSpan={{ base: 6, lg: 2, xl: 1 }}
+        colSpan={{ base: 6, lg: 1, xl: 1 }}
         minHeight={{ lg: "100vh" }}
       >
         <Navigation logout={onLogout} name={authedUser.name} />
@@ -137,7 +137,7 @@ function App() {
       <GridItem
         as="main"
         bg={theme === "dark" ? "#121212" : "white"}
-        colSpan={{ base: 6, lg: 4, xl: 5 }}
+        colSpan={{ base: 6, lg: 5, xl: 5 }}
       >
         <Routes>
           <Route

@@ -36,7 +36,7 @@ function NoteInput({ addNote }) {
   };
 
   return (
-    <Box as="form" p="46px" h="100vh" onSubmit={onSubmitEventHandler}>
+    <Box as="form" p="26px" h="100vh" onSubmit={onSubmitEventHandler}>
       <Input
         w="100%"
         size="2xl"
@@ -46,7 +46,7 @@ function NoteInput({ addNote }) {
         value={title}
         onChange={onTitleChangeEventHandler}
         _placeholder={{
-          fontSize: "64px",
+          fontSize:{base: "34px", lg:"64px"} ,
           color: "gray.400",
           fontStyle: "italic",
         }}

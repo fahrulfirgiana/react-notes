@@ -12,14 +12,14 @@ function NoteItem({ id, title, createdAt, body }) {
   const { theme } = useContext(ThemeContext);
 
   return (
-    <SpotlightCard spotlightColor="rgba(0, 229, 255, 0.2)"> {/* Tambahkan SpotlightCard */}
+    <SpotlightCard spotlightColor="rgba(0, 229, 255, 0.2)"> 
       <Card.Root
         transition="background 0.3s ease-in-out"
         h="100%"
         w="100%"
-        // borderRadius="12px"
-        // borderRightWidth="1px"
-        // borderColor={theme === "dark" ? "#353535" : "#0000001a"}
+        borderRadius="1.5rem"
+        borderRightWidth="1px"
+        borderColor={theme === "dark" ? "#353535" : "#0000001a"}
         bg={theme === "dark" ? "#1e1e1e" : "#0000000d"}
         color={theme === "dark" ? "white" : "#333"}
         overflow="hidden"
