@@ -44,7 +44,7 @@ function HomePage({ name, logout }) {
   );
 
   return (
-    <Box as="section" h="100vh">
+    <Box as="section">
       <Box p={{ base: "16px", lg: "41px" }}>
         <Navbar
           title={content.home[locale].header}

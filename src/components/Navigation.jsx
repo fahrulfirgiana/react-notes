@@ -27,7 +27,7 @@ import { MdDarkMode, MdLightMode } from "react-icons/md";
 import PropTypes from 'prop-types';
 
 function Navigation({ logout, name }) {  
-  const { locale } = useContext(LocaleContext);
+  const { locale, toggleLocale } = useContext(LocaleContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const location = useLocation();
   const [open, setOpen] = useState(false);
@@ -105,8 +105,14 @@ function Navigation({ logout, name }) {
                   {theme === "light" ? "Dark" : "Light"}
                 </span>
               </MenuItem>
-              <MenuItem className="user-menu-link" py={2} px={3}>
-                <IoLanguage size={22} />{" "}
+              <MenuItem
+                className="user-menu-link"
+                py={2}
+                px={3}
+                onClick={toggleLocale}
+                value="underline"
+              >
+                <IoLanguage size={22} className="theme-icon" />{" "}
                 {locale === "id" ? "Indonesia" : "English"}
               </MenuItem>
               <MenuSeparator className="separator" />
